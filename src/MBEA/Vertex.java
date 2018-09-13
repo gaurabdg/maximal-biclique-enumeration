@@ -3,26 +3,30 @@ package MBEA;
 import java.util.ArrayList;
 import java.util.List;
 
-class Vertex implements Comparable<Vertex>{
+class Vertex{
     private int label;
-    private List<Vertex> neighbours;
+    private List<Vertex> neighbours  = new ArrayList<>();
 
-    Vertex(){
-        neighbours = new ArrayList<Vertex>();
+    Vertex(){}
+    Vertex(int label)
+    {
+        this.label = label;
     }
-    Vertex(int label) {
-        neighbours = new ArrayList<Vertex>();
-        this.label = label; }
 
-    List<Vertex> getNeighbours() { return neighbours; }
+    List<Vertex> getNeighbours()
+    {
+        return neighbours;
+    }
 
-    int getLabel() { return label; }
+    int getLabel()
+    {
+        return label;
+    }
 
     private void addNeighbour(Vertex v)
     {
         if(neighbours.contains(v))
             throw new RuntimeException("Vertex::add_neighbour - vertex is already a neighbour.");
-
         neighbours.add(v);
     }
 
@@ -32,7 +36,6 @@ class Vertex implements Comparable<Vertex>{
             neighbours.remove(v);
         else
             throw new RuntimeException("Vertex::remove_neighbour - vertex is not a neighbour.");
-
     }
 
     static void addEdge(Vertex v1, Vertex v2)
@@ -59,19 +62,11 @@ class Vertex implements Comparable<Vertex>{
             v2.removeNeighbour(v1);
     }
 
-    boolean isEqual(Vertex otherV)
-    {
-        return this.label == otherV.label;
-    }
+
 
     int getNeighboursSize()
     {
         return neighbours.size();
-    }
-
-    boolean isNeighbour(Vertex otherV)
-    {
-        return neighbours.contains(otherV);
     }
 
     int numberOfNeighboursOfVInSet(List<Vertex> set)
@@ -87,25 +82,30 @@ class Vertex implements Comparable<Vertex>{
         return out;
     }
 
+    boolean isNeighbour(Vertex otherV)
+    {
+        return neighbours.contains(otherV);
+    }
+
+    boolean isEqual(Vertex otherV)
+    {
+        return this.label == otherV.label;
+    }
+
     boolean isMember(List<Vertex> set)
     {
         boolean out = false;
         for(Vertex v:set)
         {
-            if(this.equals(v)) //TODO DOUBT
+            if(this.equals(v))
                 out = true;
-
         }
         return out;
     }
-
 
     public int compareTo(Vertex other)
     {
         return this.getNeighboursSize() - other.getNeighboursSize();
     }
-
-
-
 
 }

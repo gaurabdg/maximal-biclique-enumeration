@@ -12,25 +12,20 @@ public class BicliqueFinder extends Biclique {
     private VertexSet initQ;
     private ArrayList<Biclique> maximalBicliques;
 
-
     BicliqueFinder(BipartiteGraph inGraph)
     {
         graph = inGraph;
         initL = new VertexSet(graph.getLeftNodes());
         initP = new VertexSet(graph.getRightNodes());
-
         initR = new VertexSet();
         initQ = new VertexSet();
-//                printList(initQ.getSetV());
-        maximalBicliques = new ArrayList<Biclique>();
-
+        maximalBicliques = new ArrayList<>();
     }
 
     void findMaximalBicliques(String algType)
     {
         if(algType.equals("standard"))
         {
-//            printList(initL.getSetV());
             bicliqueFind(initL, initR, initP, initQ);
             foundAll = true;
         }
@@ -38,6 +33,7 @@ public class BicliqueFinder extends Biclique {
         {
             initP.sortByNumOfNeighbours();
             bicliqueFindimP(initL,initR,initP,initQ);
+            foundAll = true;
         }
     }
 
@@ -79,7 +75,7 @@ public class BicliqueFinder extends Biclique {
         VertexSet R = inR;
         VertexSet P = inP;
         VertexSet Q = inQ;
-        int cond = 0;
+        int recurrenceCondition = 0;
 //        System.out.println("L: "+L.toStringVertexSet());
 //        System.out.println("R: "+R.toStringVertexSet());
 //        System.out.println("P: "+P.toStringVertexSet());
@@ -90,7 +86,7 @@ public class BicliqueFinder extends Biclique {
             Vertex x = P.getVertex(0);
             //System.out.println("x: "+x.getLabel());
             VertexSet Rprime;
-            if(cond==0)
+            if(recurrenceCondition==0)
                 Rprime = R;
             else
                 Rprime = new VertexSet();
@@ -150,11 +146,13 @@ public class BicliqueFinder extends Biclique {
                     //System.out.println("Lrp1: "+Lprime.toStringVertexSet());
                     int numLprimeNeighbours = v.numberOfNeighboursOfVInSet(Lprime.getSetV());
                     //System.out.println("numLprNeighs1: "+numLprimeNeighbours);
-                    if(numLprimeNeighbours == Lprime.getSize()) {
+                    if(numLprimeNeighbours == Lprime.getSize())
+                    {
                         Rprime.addVertex(v);
                         //System.out.println("Rpr1: "+Rprime.toStringVertexSet());
                     }
-                    else if(numLprimeNeighbours > 0){
+                    else if(numLprimeNeighbours > 0)
+                    {
                         Pprime.addVertex(v);
                         //System.out.println("Ppr: "+Pprime.toStringVertexSet());
                     }
@@ -169,10 +167,10 @@ public class BicliqueFinder extends Biclique {
                 if(!Pprime.isSetEmpty()){
                    // System.out.println("calling again");
                     bicliqueFind(Lprime,Rprime,Pprime,Qprime);
-                    cond = 1;
+                    recurrenceCondition = 1;
                 }
                 else
-                    cond = 1;
+                    recurrenceCondition = 1;
 
             }
             P.removeVertex(x);
@@ -182,17 +180,23 @@ public class BicliqueFinder extends Biclique {
         }
     }
 
+    // TODO debug improved algo
     private void bicliqueFindimP(VertexSet inL, VertexSet inR, VertexSet inP, VertexSet inQ)
     {
         VertexSet L = inL;
         VertexSet R = inR;
         VertexSet P = inP;
         VertexSet Q = inQ;
+        int recurrenceCondition = 0;
 
         while (!P.isSetEmpty())
         {
             Vertex x = P.getVertex(0);
-            VertexSet Rprime = R;
+            VertexSet Rprime;
+            if(recurrenceCondition==0)
+                Rprime = R;
+            else
+                Rprime = new VertexSet();
             Rprime.addVertex(x);
 
             VertexSet Lprime = new VertexSet();
@@ -253,10 +257,16 @@ public class BicliqueFinder extends Biclique {
 
                 Biclique bcq = new Biclique(Lprime.getSetV(), Rprime.getSetV());
                 bcq.isMaximal = true;
+                System.out.println(bcq.toStringBiclique());
                 maximalBicliques.add(bcq);
 
-                if(!Pprime.isSetEmpty())
+                if(!Pprime.isSetEmpty()){
                     bicliqueFindimP(Lprime,Rprime,Pprime,Qprime);
+                    recurrenceCondition = 1;
+                }
+                else
+                    recurrenceCondition = 1;
+
             }
 
             for(int j=0;j<C.getSize();j++)

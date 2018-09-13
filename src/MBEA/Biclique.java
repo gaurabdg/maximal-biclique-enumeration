@@ -5,45 +5,14 @@ import java.util.List;
 
 import static MBEA.Vertex.addEdge;
 
-public class Biclique {
+public class Biclique extends BipartiteGraph{
     boolean isMaximal;
-    private List<List<Integer>> incidenceMatrix ;
-    protected List<Vertex> leftNodes ;
-    protected List<Vertex> rightNodes ;
-    List<List<Vertex>> leftNeighbours ;
-    List<List<Vertex>> rightNeighbours ;
     Biclique() {}
-
-    public boolean isMaximal() {
-        return isMaximal;
-    }
-
-    public List<List<Integer>> getIncidenceMatrix() {
-        return incidenceMatrix;
-    }
-
-    public List<Vertex> getLeftNodes() {
-        return leftNodes;
-    }
-
-    public List<Vertex> getRightNodes() {
-        return rightNodes;
-    }
-
-    public List<List<Vertex>> getLeftNeighbours() {
-        return leftNeighbours;
-    }
-
-    public List<List<Vertex>> getRightNeighbours() {
-        return rightNeighbours;
-    }
-
     Biclique(List<List<Integer>> incMat)
 
     {
         incidenceMatrix = incMat;
     }
-
     Biclique(List<Vertex> leftV, List<Vertex> rightV)
     {
         leftNeighbours = new ArrayList<>();
@@ -54,18 +23,18 @@ public class Biclique {
 //        List<Vertex> tmp = leftNodes;
 //        tmp.addAll(rightNodes);
 
-
         for(int i=0;i<leftNodes.size();i++)
         {
 
             for(int j=0;j<rightNodes.size();j++)
             {
                 Vertex left = leftNodes.get(i);
-                Vertex right = rightNodes.get(j); //i to j
-                try {
+                Vertex right = rightNodes.get(j);
+                try
+                {
                     Vertex.addEdge(left,right);
-                } catch (RuntimeException e) {
                 }
+                catch (RuntimeException e) {}
             }
         }
 
@@ -92,7 +61,7 @@ public class Biclique {
             res += Integer.toString(leftNodes.get(i).getLabel()) + " ";
         }
 
-        res += "| ";
+        res += "<-> ";
 
         for(int i=0;i< rightNodes.size();i++)
         {
@@ -102,21 +71,45 @@ public class Biclique {
         return res;
     }
 
-    private String getNeighbourhoodString(List<List<Vertex>> neighbours)
-    {
-        String res = "";
-        for(int i=0;i<neighbours.size();i++)
-        {
-            List<Vertex> nvList = neighbours.get(i);
-            for(int j=0;j<nvList.size();j++)
-            {
-                Vertex v = nvList.get(j);
-                int lab = v.getLabel();
-                res += Integer.toString(lab) + " ";
-            }
-            res += "\n";
-        }
-        return res;
+//    private String getNeighbourhoodString(List<List<Vertex>> neighbours)
+//    {
+//        String res = "";
+//        for(int i=0;i<neighbours.size();i++)
+//        {
+//            List<Vertex> nvList = neighbours.get(i);
+//            for(int j=0;j<nvList.size();j++)
+//            {
+//                Vertex v = nvList.get(j);
+//                int lab = v.getLabel();
+//                res += Integer.toString(lab) + " ";
+//            }
+//            res += "\n";
+//        }
+//        return res;
+//    }
+
+    public boolean isMaximal() {
+        return isMaximal;
+    }
+
+    public List<List<Integer>> getIncidenceMatrix() {
+        return incidenceMatrix;
+    }
+
+    public List<Vertex> getLeftNodes() {
+        return leftNodes;
+    }
+
+    public List<Vertex> getRightNodes() {
+        return rightNodes;
+    }
+
+    public List<List<Vertex>> getLeftNeighbours() {
+        return leftNeighbours;
+    }
+
+    public List<List<Vertex>> getRightNeighbours() {
+        return rightNeighbours;
     }
 
     void printNeighbourhoods()
@@ -138,4 +131,5 @@ public class Biclique {
         printList(getLeftNodes());
         printList(getRightNodes());
     }
+
 }

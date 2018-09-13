@@ -12,8 +12,9 @@ public class Solver {
         List<List<Integer>> adjMatrix = new ArrayList<>();
         Scanner input = null;
 
-        try{
-             input = new Scanner(new File("src/MBEA/array.txt"));
+        try
+        {
+             input = new Scanner(new File(args[0]));
         }
         catch (FileNotFoundException e)
         {

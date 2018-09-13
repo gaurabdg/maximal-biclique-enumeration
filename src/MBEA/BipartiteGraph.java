@@ -4,25 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BipartiteGraph {
-    private List<List<Integer>> incidenceMatrix ;
-    protected List<Vertex> leftNodes ;
-    protected List<Vertex> rightNodes ;
-    List<List<Vertex>> leftNeighbours ;
-    List<List<Vertex>> rightNeighbours ;
-    BipartiteGraph() {
-         incidenceMatrix = new ArrayList<>();
-         leftNodes = new ArrayList<>();
-         rightNodes = new ArrayList<>();
-         leftNeighbours = new ArrayList<>();
-         rightNeighbours = new ArrayList<>();
-    }
+
+    protected List<List<Integer>> incidenceMatrix ;
+    protected List<Vertex> leftNodes = new ArrayList<>();
+    protected List<Vertex> rightNodes = new ArrayList<>() ;
+    protected List<List<Vertex>> leftNeighbours = new ArrayList<>();
+    protected List<List<Vertex>> rightNeighbours = new ArrayList<>();
+    BipartiteGraph() {}
     BipartiteGraph(List<List<Integer>> incMat)
     {
         incidenceMatrix = incMat;
-        leftNodes = new ArrayList<>();
-        rightNodes = new ArrayList<>();
-        leftNeighbours = new ArrayList<>();
-        rightNeighbours = new ArrayList<>();
 
         checkInput(incidenceMatrix);
 
@@ -52,9 +43,13 @@ public class BipartiteGraph {
                 {
                     Vertex left = leftNodes.get(i);
                     Vertex right = rightNodes.get(j);
-                    try {
+                    try
+                    {
                         Vertex.addEdge(left, right);
-                    } catch (RuntimeException e) {
+                    }
+                    catch (RuntimeException e)
+                    {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -71,26 +66,6 @@ public class BipartiteGraph {
             Vertex rightV = rightNodes.get(i);
             rightNeighbours.add(rightV.getNeighbours());
         }
-    }
-
-    public List<List<Integer>> getIncidenceMatrix() {
-        return incidenceMatrix;
-    }
-
-    public List<Vertex> getLeftNodes() {
-        return leftNodes;
-    }
-
-    public List<Vertex> getRightNodes() {
-        return rightNodes;
-    }
-
-    public List<List<Vertex>> getLeftNeighbours() {
-        return leftNeighbours;
-    }
-
-    public List<List<Vertex>> getRightNeighbours() {
-        return rightNeighbours;
     }
 
     void checkInput(List<List<Integer>> incMat)
@@ -130,7 +105,27 @@ public class BipartiteGraph {
         return result;
     }
 
-    private String getNeighbourhoodString(List<List<Vertex>> neighbours)
+    public List<List<Integer>> getIncidenceMatrix() {
+        return incidenceMatrix;
+    }
+
+    public List<Vertex> getLeftNodes() {
+        return leftNodes;
+    }
+
+    public List<Vertex> getRightNodes() {
+        return rightNodes;
+    }
+
+    public List<List<Vertex>> getLeftNeighbours() {
+        return leftNeighbours;
+    }
+
+    public List<List<Vertex>> getRightNeighbours() {
+        return rightNeighbours;
+    }
+
+    public String getNeighbourhoodString(List<List<Vertex>> neighbours)
     {
         String res = "";
         for(int i=0;i<neighbours.size();i++)

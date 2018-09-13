@@ -8,9 +8,11 @@ import java.util.Comparator;
 public class VertexSet extends Vertex{
     private List<Vertex> setV ;
 
-    VertexSet(){
+    VertexSet()
+    {
         setV =  new ArrayList<>();
     }
+
     VertexSet(List<Vertex> nodesIn)
     {
         setV = nodesIn;
@@ -19,6 +21,14 @@ public class VertexSet extends Vertex{
     List<Vertex> getSetV()
     {
         return setV;
+    }
+    int getSize()
+    {
+        return setV.size();
+    }
+    Vertex getVertex(int i)
+    {
+        return setV.get(i);
     }
 
     void addVertex(Vertex v)
@@ -33,11 +43,6 @@ public class VertexSet extends Vertex{
             setV.remove(v);
     }
 
-    boolean isEqual(VertexSet other)
-    {
-        return setV.equals(other.setV);
-    }
-
     List<Vertex> sortByNumOfNeighbours()
     {
         Collections.sort(setV, new Comparator<Vertex>() {
@@ -50,14 +55,9 @@ public class VertexSet extends Vertex{
         return setV;
     }
 
-    Vertex getVertex(int i)
+    boolean isEqual(VertexSet other)
     {
-        return setV.get(i);
-    }
-
-    int getSize()
-    {
-        return setV.size();
+        return setV.equals(other.setV);
     }
 
     boolean isSetEmpty()
