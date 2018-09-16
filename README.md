@@ -6,7 +6,7 @@ Run the JAR file with the binary matrix file as argument:
 
 `java -jar MBEA.jar file.txt`
 
-###To test:
+### To test:
 
 Go to the main directory and execute it:
 
