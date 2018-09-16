@@ -15,7 +15,9 @@ public class VertexSet extends Vertex{
 
     VertexSet(List<Vertex> nodesIn)
     {
-        setV = nodesIn;
+        List<Vertex> newlist = new ArrayList<>();
+        newlist.addAll(nodesIn);
+        setV = newlist;
     }
 
     List<Vertex> getSetV()

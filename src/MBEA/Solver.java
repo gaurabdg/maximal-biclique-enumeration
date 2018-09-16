@@ -14,7 +14,7 @@ public class Solver {
 
         try
         {
-             input = new Scanner(new File(args[0]));
+             input = new Scanner(new File("matrix.txt"));
         }
         catch (FileNotFoundException e)
         {

@@ -11,6 +11,7 @@ public class BicliqueFinder extends Biclique {
     private VertexSet initR;
     private VertexSet initQ;
     private ArrayList<Biclique> maximalBicliques;
+    private int recurrenceCondition;
 
     BicliqueFinder(BipartiteGraph inGraph)
     {
@@ -71,11 +72,11 @@ public class BicliqueFinder extends Biclique {
 
     private void bicliqueFind(VertexSet inL, VertexSet inR, VertexSet inP, VertexSet inQ)
     {
-        VertexSet L = inL;
-        VertexSet R = inR;
-        VertexSet P = inP;
-        VertexSet Q = inQ;
-        int recurrenceCondition = 0;
+        VertexSet L = new VertexSet(inL.getSetV());
+        VertexSet R = new VertexSet(inR.getSetV());
+        VertexSet P = new VertexSet(inP.getSetV());
+        VertexSet Q = new VertexSet(inQ.getSetV());
+        recurrenceCondition = 0;
 //        System.out.println("L: "+L.toStringVertexSet());
 //        System.out.println("R: "+R.toStringVertexSet());
 //        System.out.println("P: "+P.toStringVertexSet());
@@ -84,25 +85,28 @@ public class BicliqueFinder extends Biclique {
         while (!P.isSetEmpty())
         {
             Vertex x = P.getVertex(0);
-            //System.out.println("x: "+x.getLabel());
-            VertexSet Rprime;
-            if(recurrenceCondition==0)
-                Rprime = R;
-            else
-                Rprime = new VertexSet();
+//            System.out.println("x: "+x.getLabel());
+//            if(recurrenceCondition==0||recurrenceCondition==2)
+//                Rprime = R;
+//            else
+//                Rprime = new VertexSet();
+            VertexSet Rprime = new VertexSet(R.getSetV());
+//            System.out.println("R: "+R.toStringVertexSet());
             Rprime.addVertex(x);
-            //System.out.println("Rpr: "+Rprime.toStringVertexSet());
+//            System.out.println("R: "+R.toStringVertexSet());
+//            System.out.println("Rpr: "+Rprime.toStringVertexSet());
+//            System.out.println(R.getSetV().hashCode()+" aaa "+Rprime.getSetV().hashCode()+"aaa"+inR.getSetV().hashCode());
 
             VertexSet Lprime = new VertexSet();
 
             for(int j=0;j<L.getSize();j++)
             {
                 Vertex u = L.getVertex(j);
-                //System.out.println("u: "+u.getLabel());
+//                System.out.println("u: "+u.getLabel());
                 if(u.isNeighbour(x))
                 {
                     Lprime.addVertex(u);
-                    //System.out.println("Lpr: "+Lprime.toStringVertexSet());
+//                    System.out.println("Lpr: "+Lprime.toStringVertexSet());
                 }
             }
 
@@ -114,47 +118,48 @@ public class BicliqueFinder extends Biclique {
             for(int j=0;j<Q.getSize();j++)
             {
                 Vertex v = Q.getVertex(j);
-                //System.out.println("v: "+v.getLabel());
+//                System.out.println("v: "+v.getLabel());
                 int numLprimeNeighbours = v.numberOfNeighboursOfVInSet(Lprime.getSetV());
-                //System.out.println("numLprNeigh: "+numLprimeNeighbours);
+//                System.out.println("numLprNeigh: "+numLprimeNeighbours);
                 if(numLprimeNeighbours == Lprime.getSize())
                 {
-                    //System.out.println("inside if 1");
+//                    System.out.println("inside if 1");
                     isMax = false;
                     break;
                 }
                 else if (numLprimeNeighbours > 0)
                 {
                     Qprime.addVertex(v);
-                    //System.out.println("inside else if 1");
-                    //System.out.println("Qpr: "+Qprime.toStringVertexSet());
+//                    System.out.println("inside else if 1");
+//                    System.out.println("Qpr: "+Qprime.toStringVertexSet());
                 }
             }
 
             if(isMax)
             {
-               // System.out.println("inside if 2");
+//                System.out.println("inside if 2");
                 for(int j=0;j<P.getSize();j++)
                 {
                     Vertex v = P.getVertex(j);
-                    //System.out.println("v: "+v.getLabel());
+//                    System.out.println("v: "+v.getLabel());
                     if(v.isEqual(x)) // doubt equals
                     {
-                       // System.out.println("inside if 2.1");
+//                        System.out.println("inside if 2.1");
                         continue;
                     }
-                    //System.out.println("Lrp1: "+Lprime.toStringVertexSet());
+//                    System.out.println("Lrp1: "+Lprime.toStringVertexSet());
                     int numLprimeNeighbours = v.numberOfNeighboursOfVInSet(Lprime.getSetV());
-                    //System.out.println("numLprNeighs1: "+numLprimeNeighbours);
+//                    System.out.println("numLprNeighs1: "+numLprimeNeighbours);
                     if(numLprimeNeighbours == Lprime.getSize())
                     {
                         Rprime.addVertex(v);
-                        //System.out.println("Rpr1: "+Rprime.toStringVertexSet());
-                    }
+//                        System.out.println("Rpr1: "+Rprime.toStringVertexSet());
+//                        System.out.println("debug R: "+R.hashCode()+" " +Rprime.hashCode());
+                }
                     else if(numLprimeNeighbours > 0)
                     {
                         Pprime.addVertex(v);
-                        //System.out.println("Ppr: "+Pprime.toStringVertexSet());
+//                        System.out.println("Ppr: "+Pprime.toStringVertexSet());
                     }
 
                 }
@@ -165,18 +170,19 @@ public class BicliqueFinder extends Biclique {
                 maximalBicliques.add(bcq);
 
                 if(!Pprime.isSetEmpty()){
-                   // System.out.println("calling again");
+//                    System.out.println("calling again");
                     bicliqueFind(Lprime,Rprime,Pprime,Qprime);
                     recurrenceCondition = 1;
                 }
                 else
-                    recurrenceCondition = 1;
+                    recurrenceCondition = 2;
 
             }
             P.removeVertex(x);
-            //System.out.println("P1: "+P.toStringVertexSet());
+//            System.out.println("P1: "+P.toStringVertexSet());
             Q.addVertex(x);
-            //System.out.println("Q1: "+Q.toStringVertexSet());
+//            System.out.println("Q1: "+Q.toStringVertexSet());
+//            System.out.println("last line debug R: "+Rprime.toStringVertexSet());
         }
     }
 
