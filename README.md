@@ -2,9 +2,9 @@
 
 ## Usage Instructions:
 
-Run the JAR file with the binary matrix file and the type of algorithm(standard/improved) as arguments:
+Run the JAR file with the adjacency matrix filepath and the type of algorithm(standard/improved) as arguments:
 
-`java -jar MBEA.jar filename.txt  _algorithm type_`
+`java -jar MBEA.jar path_to/filename.txt  _algorithm type_`
 
 ### To test:
 
