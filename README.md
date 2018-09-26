@@ -11,7 +11,7 @@ Run the JAR file with the file containing the adjacency matrix and the type of o
 - *standard* - compute all maximal bicliques(MBEA)
 - *MBC* - find the minimum nuber of bicliques required to cover all edges(Minimum Biclique Cover problem)
 
-`$ java -jar MBEA.jar filename.txt  _type_`
+`$ java -jar MBEA.jar path_to/filename.txt  _type_`
 
 ###Interpreting the output:
 
