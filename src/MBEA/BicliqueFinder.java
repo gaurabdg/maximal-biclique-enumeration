@@ -1,6 +1,11 @@
 package MBEA;
 
+import javafx.util.Pair;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 public class BicliqueFinder extends Biclique {
     private boolean foundAll = false;
@@ -12,6 +17,8 @@ public class BicliqueFinder extends Biclique {
     private VertexSet initQ;
     private ArrayList<Biclique> maximalBicliques;
     private int recurrenceCondition;
+    private HashSet<Pair<Integer,Integer>> vertexSet = new HashSet<>();
+
 
     BicliqueFinder(BipartiteGraph inGraph)
     {
@@ -30,11 +37,12 @@ public class BicliqueFinder extends Biclique {
             bicliqueFind(initL, initR, initP, initQ);
             foundAll = true;
         }
-        else if(algType.equals("improved"))
+        else if(algType.equals("MBC"))
         {
             initP.sortByNumOfNeighbours();
             bicliqueFindimP(initL,initR,initP,initQ);
             foundAll = true;
+            findMinimumBicliqueCover();
         }
     }
 
@@ -245,16 +253,30 @@ public class BicliqueFinder extends Biclique {
                         Pprime.addVertex(v);
                 }
 
+                int isPresent = 0;
                 Biclique bcq = new Biclique(Lprime.getSetV(), Rprime.getSetV());
                 bcq.isMaximal = true;
-                System.out.println(bcq.toStringBiclique());
-                maximalBicliques.add(bcq);
+//                System.out.println(bcq.toStringBiclique());
+                for(Vertex v1:bcq.getLeftNodes())
+                {
+                    for(Vertex v2:bcq.getRightNodes())
+                    {
+                        Pair<Integer,Integer> pr = new Pair<>(v1.getLabel(),v2.getLabel());
+                        if(vertexSet.contains(pr)){
+                            isPresent++;
+                        }
+
+                        vertexSet.add(pr);
+                    }
+
+                }
+
+                if(isPresent!=(bcq.getLeftNodes().size()*bcq.getRightNodes().size()))
+                    maximalBicliques.add(bcq);
 
                 if(!Pprime.isSetEmpty()){
                     bicliqueFindimP(Lprime,Rprime,Pprime,Qprime);
                     }
-
-
             }
 
             for(int j=0;j<C.getSize();j++)
@@ -264,7 +286,58 @@ public class BicliqueFinder extends Biclique {
                 P.removeVertex(v);
             }
         }
+//        findMinimumBicliqueCover();
     }
+
+    void findMinimumBicliqueCover()
+    {
+        VertexSet leftNodeList = new VertexSet(graph.getLeftNodes());
+        List<Vertex> sortedLeftNodes = leftNodeList.sortByNumOfNeighbours();
+
+        for(int i=0;i<sortedLeftNodes.size();i++)
+        {
+            Vertex v = sortedLeftNodes.get(i);
+            for(int j=0;j<maximalBicliques.size();j++)
+            {
+                Biclique b = maximalBicliques.get(j);
+                List<Vertex> bLeft = b.getLeftNodes();
+                boolean vertexPresent = bLeft.contains(v);
+                if(vertexPresent)
+                {
+                    int present=0;
+                    List<Vertex> bRight = b.getRightNodes();
+                    for(Vertex right:v.getNeighbours())
+                    {
+                        if(bRight.contains(right))
+                            present++;
+                    }
+                    if(present==v.getNeighboursSize())
+                    {
+                        System.out.println(b.toStringBiclique());
+                        for(int k=0;k<bLeft.size();k++)
+                        {
+                            for(int l=0;l<bRight.size();l++)
+                            {
+                                bLeft.get(k).removeNeighbour(bRight.get(l));
+                            }
+                        }
+//                        maximalBicliques.remove(b);
+                        int abs=0;
+                        for(Vertex v1:sortedLeftNodes)
+                        {
+                            if(v1.getNeighboursSize()==0)
+                                abs++;
+                        }
+                        if(abs==sortedLeftNodes.size())
+                            return;
+                        break;
+                    }
+                }
+
+            }
+        }
+    }
+
 
     int getNumBicliques()
     {

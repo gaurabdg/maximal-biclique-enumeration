@@ -30,12 +30,12 @@ class Vertex{
         neighbours.add(v);
     }
 
-    private void removeNeighbour(Vertex v)
+    public void removeNeighbour(Vertex v)
     {
         if(neighbours.contains(v))
             neighbours.remove(v);
-        else
-            throw new RuntimeException("Vertex::remove_neighbour - vertex is not a neighbour.");
+//        else
+//            throw new RuntimeException("Vertex::remove_neighbour - vertex is not a neighbour.");
     }
 
     static void addEdge(Vertex v1, Vertex v2)

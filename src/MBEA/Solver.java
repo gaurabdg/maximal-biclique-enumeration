@@ -1,11 +1,10 @@
 package MBEA;
 
+import javafx.util.Pair;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Solver {
     public static void main(String args[])
@@ -35,27 +34,28 @@ public class Solver {
         }
 
         BicliqueFinder bicliqueFinder = new BicliqueFinder(new BipartiteGraph(adjMatrix));
+
+
         bicliqueFinder.findMaximalBicliques(args[1]);
 
-
-        // BENCHMARK TESTING FOR RANDOM BINARY MATRIX
+    // BENCHMARK TESTING FOR RANDOM BINARY MATRIX
 
 
 //        Random random = new Random();
 //
-//        int size = 8;
+//        int size = 4;
 //        for(int i=0;i<size;i++)
 //        {
 //            adjMatrix.add(new ArrayList<>());
 //            for(int j=0;j<size;j++)
 //            {
-//                if(random.nextDouble() < 0.4)
+//                if(random.nextDouble() < 0.5)
 //                    adjMatrix.get(i).add(1);
 //                else
 //                    adjMatrix.get(i).add(0);
 //            }
 //        }
-//
+
 //        for(int i=0;i<size;i++)
 //        {
 //            adjMatrix.add(new ArrayList<>());
@@ -87,5 +87,6 @@ public class Solver {
 
 
 
-    }
 }
+    }
+
