@@ -4,7 +4,7 @@
 
 Update: **Extension for finding Minimum Biclique Cover is added.**
 
-###Execution
+### Execution
 
 Run the JAR file with the file containing the adjacency matrix and the type of output required as arguments.
 
@@ -13,7 +13,7 @@ Run the JAR file with the file containing the adjacency matrix and the type of o
 
 `$ java -jar MBEA.jar path_to/filename.txt  _type_`
 
-###Interpreting the output:
+### Interpreting the output:
 
 `lNode1 lNode2 ... <-> rNode1 rNode2 ...` is a maximal biclique satisfying the conditions.
 
